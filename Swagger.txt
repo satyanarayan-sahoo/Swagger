@@ -1,0 +1,74 @@
+                                                              Swagger
+                                                              =======
+->Now a days REST and Microservices have got a lot of momentum. At the same time, actual REST specification does not suggest
+  any standard way to document the REST APIs that we are going to expose [like WSDL for SOAP]. As a result, everybody is
+  documenting their APIs in their own way, resulting a gap in common structure which all can easily follow, understand and
+  use. We need to have a common pattern and tool.Swagger (backed by companies like Google, IBM, Microsoft) does this same
+  job of filling the gap of common documentation style.
+
+1.What is Swagger?
+==================
+->Swagger (now the “Open API Initiative”) is a specification and framework for describing REST APIs using a common language
+  that everyone can understand. There are other available frameworks that have gained some popularity, such as RAML, 
+  Summation etc. but Swagger is most popular at this point of time considering its features and acceptance among the 
+  developer community.
+->It offers both human readable and machine readable format of documentation. It provides both JSON and UI support. JSON can
+  be used as machine readable format and Swagger-UI is for visual display which is easy for humans to understand by just 
+  browsing the api documentation.
+
+2.Swagger2 Maven Dependencies
+=============================
+->Open pom.xml file of the spring-boot-swagger2 project and add below two swagger related dependencies i.e. 
+  springfox-swagger2 and springfox-swagger-ui.
+
+       <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
+3.Verify Swagger2 JSON Format Docs
+==================================
+->Open the link http://localhost:8080/swagger2-demo/v2/api-docs and it should give the entire documentation in JSON format. 
+  This is not that much easy to read and understand, actually Swagger has provided this to be used in other systems like API
+  management tools now a days popular, which provides the functionality like API gateways, API caching, API documentation etc.
+
+4.Verify Swagger2 UI Docs
+=========================
+->Open http://localhost:8080/swagger2-demo/swagger-ui.html to see the Swagger UI documentation in the browser.
+
+5.Example:
+==========
+@Configuration
+@EnableSwagger2
+public class Swagger2Configuration {
+	@Bean
+	public Docket ssaWebApi() {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.swagger2.demo.controller"))
+				.paths(PathSelectors.any()).build().apiInfo(metaData());
+	}
+
+	private ApiInfo metaData() {
+		ApiInfo apiInfo = new ApiInfo("Swagger REST API",
+				"Swagger Rest API Demo Application.",
+				"2.0",
+				"Terms of service",
+				new Contact("Satyanarayan Sahoo",
+						"https://www.facebook.com/satyanarayan.sahooraaz",
+						"satyanarayansahoo.2717@gmail.com"
+						),
+				"Apache License Version 2.0",
+				"https://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
+		return apiInfo;
+	}
+}// class
+
